@@ -1,5 +1,3 @@
--- MySQL dump 10.13  Distrib 8.0.41, for Win64 (x86_64)
---
 -- Host: localhost    Database: logistic_data
 -- ------------------------------------------------------
 -- Server version	8.0.41
@@ -161,4 +159,3 @@ CREATE TABLE `status` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-05-08 16:36:14
