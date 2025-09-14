@@ -1,4 +1,4 @@
-## Previous Month and Current Month Total Sales with Increase Percentage
+## Previous Month and Current Month Total Sales with Increase Percentage  ##WINDOW FUNCTION LAC
 WITH monthly_sales AS (                                  
   SELECT 
     MONTH(transaction_date) AS month,                            
@@ -18,7 +18,7 @@ FROM monthly_sales
 ORDER BY month;
 
 
- ##weekdays and weekend Total sales
+ # Weekdays and Weekend Total sales
  SELECT 
 	case when dayofweek(transaction_date) in (1,7) then 'weekend'
 	else 'weekdays'
@@ -41,7 +41,7 @@ select
     ) as internal_query
 
 
-#sales status and Total sales By each day of month
+# Sales status and Total sales By each day of month
 select 
 day_of_month,
 case
@@ -62,6 +62,52 @@ where
 ) as sales_data
 order by day_of_month ;
 
+# Time Serial Analysis
+select 
+count(*) as total_orders,
+sum(unit_price * transaction_qty) as total_sales,
+sum(transaction_qty) as total_sold_qty
+from coffeeshopsales
+where
+month(transaction_date) = 5   -- may
+and day(transaction_date) = 1 -- monday..sunday (1,...,7) 
+and hour(transaction_time) = 16 -- 24hour format
+
+#Hourly total sales 
+SELECT
+	hour(transaction_time),
+	sum(unit_price * transaction_qty) as total_sales
+from coffeeshopsales
+where month(transaction_date) = 5   -- may
+group by hour (transaction_time)
+order by hour (transaction_time) 
+
+# Weekly Total sales
+SELECT 
+    CASE 
+        WHEN DAYOFWEEK(transaction_date) = 2 THEN 'Monday'
+        WHEN DAYOFWEEK(transaction_date) = 3 THEN 'Tuesday'
+        WHEN DAYOFWEEK(transaction_date) = 4 THEN 'Wednesday'
+        WHEN DAYOFWEEK(transaction_date) = 5 THEN 'Thursday'
+        WHEN DAYOFWEEK(transaction_date) = 6 THEN 'Friday'
+        WHEN DAYOFWEEK(transaction_date) = 7 THEN 'Saturday'
+        ELSE 'Sunday'
+    END AS Day_of_Week,
+    ROUND(SUM(unit_price * transaction_qty)) AS Total_Sales
+FROM 
+    coffeeshopsales
+WHERE 
+    MONTH(transaction_date) = 5 -- Filter for May (month number 5)
+GROUP BY 
+    CASE 
+        WHEN DAYOFWEEK(transaction_date) = 2 THEN 'Monday'
+        WHEN DAYOFWEEK(transaction_date) = 3 THEN 'Tuesday'
+        WHEN DAYOFWEEK(transaction_date) = 4 THEN 'Wednesday'
+        WHEN DAYOFWEEK(transaction_date) = 5 THEN 'Thursday'
+        WHEN DAYOFWEEK(transaction_date) = 6 THEN 'Friday'
+        WHEN DAYOFWEEK(transaction_date) = 7 THEN 'Saturday'
+        ELSE 'Sunday'
+    END;
 
 ## Total Orders by previous month and current month with increase percentage
 WITH monthly_sales AS (                                  
